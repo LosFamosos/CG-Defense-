@@ -20,8 +20,6 @@ j1Scene::j1Scene() : j1Module()
 	name.create("scene");
 
 	mainmenu = "Main_menu.tmx";
-	level1 = "MAGIC_CAVES.tmx";
-	level2 = "MAGIC_CAVES_2.tmx";
 
 }
 
@@ -71,25 +69,6 @@ bool j1Scene::Update(float dt)
 		PlayerExists = true;//no hace falta pero por si acaso
 	}
 	
-	if(App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)			//Save game
-		App->LoadGame("save_game.xml");
-
-	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) 
-	{		//Save game
-		App->SaveGame("save_game.xml");
-		game_saved = true;
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) 		//Load game
-		FadeToBlack(level1);
-
-	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)		//Load game
-		FadeToBlack(level2);
-	
-	if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)		//Load game
-		FadeToBlack(current_level.GetString());
-
-
 	//Draw the map
 	current_map->Draw();
 
@@ -130,29 +109,23 @@ bool j1Scene::Load(pugi::xml_node& data)
 // Save Game State
 bool j1Scene::Save(pugi::xml_node& data)const 
 {
-	const char* level = current_level.GetString();
+	
 
-	data.append_attribute("level") = level;
+	data.append_attribute("level") = "lmao";
 
 	return true;
 }
 
 void j1Scene::LoadLevel(const char* level_to_load) {
 	
-	
-	if (p2SString(level_to_load) != current_level)
-	{
 			App->map->CleanUp();
 			App->map->Load(level_to_load);
-			current_level = level_to_load;
 
 			int w, h;
 			uchar* data = NULL;
 			if (App->map->CreateWalkabilityMap(w, h, &data))
 				App->pathfinding->SetMap(w, h, data);
 			RELEASE_ARRAY(data);
-
-	}
 	
 }
 
@@ -206,32 +179,6 @@ void j1Scene::FadeToBlack(const char* leveltoload)
 
 void j1Scene::ButtonAction(UiButton* button)
 {
-	switch (button->function)
-	{
-	case ButtonFunction::LOAD_MAIN_MENU:
-
-		FadeToBlack(mainmenu);
-		break;
-
-	case ButtonFunction::LOAD_LEVEL1:
-
-		FadeToBlack(level1);
-		break;
-
-	case ButtonFunction::SAVE_GAME:
-		App->SaveGame("save_game.xml");
-		game_saved = true;
-		break;
-
-	case ButtonFunction::LOAD_GAME:
-		App->LoadGame("save_game.xml");
-		break;
-
-	case ButtonFunction::OPEN_GITHUB:
-
-		ShellExecuteA(NULL, "open", "https://github.com/DevelopmentBeasts/Aegis", NULL, NULL, SW_SHOWNORMAL);
-		break;
-
-	}
+	int i = 0;
 }
 

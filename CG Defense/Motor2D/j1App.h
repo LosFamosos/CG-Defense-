@@ -21,6 +21,7 @@ class j1EntityManeger;
 class j1PathFinding;
 class j1Fonts;
 class j1Gui;
+class j1Particles;
 
 class j1App
 {

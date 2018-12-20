@@ -50,6 +50,9 @@
     <ClCompile Include="j1Gui.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="j1Particles.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
@@ -128,6 +131,9 @@
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="j1Gui.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Particles.h">
       <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>

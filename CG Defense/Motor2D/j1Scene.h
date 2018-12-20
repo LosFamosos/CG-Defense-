@@ -70,8 +70,6 @@ private:
 public:
 
 	const char*	mainmenu;
-	const char* level1 ;		//Level 1
-	const char*	level2 ;		//Level 2
 
 	////Pointer to the current map
 	j1Map* current_map=nullptr;
@@ -87,11 +85,6 @@ public:
 	bool SceneLoaded = false;
 	bool PlayerExists = false;
 	bool findplayer = false;
-
-	//Turns true if we save the game
-	bool game_saved=false;
-
-	p2SString current_level;
 
 private:
 
