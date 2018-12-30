@@ -7,6 +7,7 @@
 #include "p2List.h"
 #include "Entities.h"
 #include "Enemy.h"
+#include "Animation.h"
 
 enum class Stage {
 	STAGE_1,
@@ -14,6 +15,12 @@ enum class Stage {
 	STAGE_3,
 	STAGE_4,
 	STAGE_NONE
+};
+
+struct EnemyConfig {
+	uint speed;
+	uint damage;
+	uint hp;
 };
 
 class j1EntityManager :public j1Module
@@ -27,10 +34,17 @@ public:
 	bool Update(float dt);
 	bool CleanUp();
 
+	bool SpawnEnemy(EnemyType enemy_type);
+
 	p2List<Entity*>		entities_list;
 	Enemy*				enemies_list[MAX_ENEMIES];
 
 public:
+	//Enemy configurations
+	EnemyConfig easy_enemy_config;
+	EnemyConfig medium_enemy_config;
+	EnemyConfig hard_enemy_config;
+
 
 	Stage actual_stage;
 

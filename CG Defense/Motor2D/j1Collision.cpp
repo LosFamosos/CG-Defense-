@@ -9,11 +9,24 @@ j1Collision::j1Collision()
 	for (uint i = 0; i < MAX_COLLIDERS; ++i)
 		colliders[i] = nullptr;
 	matrix[COLLIDER_NONE][COLLIDER_NONE] = false;
-	matrix[COLLIDER_NONE][COLLIDER_WALL] = false;
+	matrix[COLLIDER_NONE][COLLIDER_TURRETSHOT] = false;
+	matrix[COLLIDER_NONE][COLLIDER_ENEMY] = false;
+	matrix[COLLIDER_NONE][COLLIDER_BASE] = false;
 
-	matrix[COLLIDER_WALL][COLLIDER_WALL]=false;
-	matrix[COLLIDER_WALL][COLLIDER_NONE] = false;
+	matrix[COLLIDER_TURRETSHOT][COLLIDER_TURRETSHOT] = false;
+	matrix[COLLIDER_TURRETSHOT][COLLIDER_NONE] = false;
+	matrix[COLLIDER_TURRETSHOT][COLLIDER_BASE] = false;
+	matrix[COLLIDER_TURRETSHOT][COLLIDER_ENEMY] = true;
 
+	matrix[COLLIDER_BASE][COLLIDER_BASE] = false;
+	matrix[COLLIDER_BASE][COLLIDER_NONE] = false;
+	matrix[COLLIDER_BASE][COLLIDER_ENEMY] = true;
+	matrix[COLLIDER_BASE][COLLIDER_TURRETSHOT] = false;
+
+	matrix[COLLIDER_ENEMY][COLLIDER_ENEMY] = false;
+	matrix[COLLIDER_ENEMY][COLLIDER_BASE] = true;
+	matrix[COLLIDER_ENEMY][COLLIDER_NONE] = false;
+	matrix[COLLIDER_ENEMY][COLLIDER_TURRETSHOT] = true;
 }
 
 // Destructor
@@ -97,9 +110,16 @@ void j1Collision::DebugDraw()
 		case COLLIDER_NONE: // white
 			App->render->DrawQuad(colliders[i]->rect, 255, 255, 255, alpha);
 			break;
-		case COLLIDER_WALL: // blue
-			App->render->DrawQuad(colliders[i]->rect, 0, 0, 255, alpha);
+		case COLLIDER_ENEMY: // red
+			App->render->DrawQuad(colliders[i]->rect, 255, 0, 0, alpha);
 			break;
+		case COLLIDER_TURRETSHOT://blue
+			App->render->DrawQuad(colliders[i]->rect, 0, 0, 1, alpha); 
+			break;
+		case COLLIDER_BASE://green
+			App->render->DrawQuad(colliders[i]->rect, 0, 1, 0, alpha);
+			break;
+
 		}
 	
 	}

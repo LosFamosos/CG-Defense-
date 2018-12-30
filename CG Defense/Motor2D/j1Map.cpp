@@ -260,8 +260,8 @@ bool j1Map::Load(const char* file_name)
 	for (objectgroup = map_file.child("map").child("objectgroup"); objectgroup && ret; objectgroup = objectgroup.next_sibling("objectgroup")) {
 		
 		objectname = objectgroup.attribute("name").as_string();
-		if (objectname == "Wall colliders") {
-			LoadColliders(objectgroup, &data.colliders, COLLIDER_WALL);
+		if (objectname == "Base colliders") {
+			LoadColliders(objectgroup, &data.colliders, COLLIDER_BASE);
 		}
 		
 	}

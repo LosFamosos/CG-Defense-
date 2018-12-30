@@ -9,9 +9,9 @@ public:
 
 	Enemy();
 
-	bool Update();
+	bool Update() override ;
 
-protected:
+public:
 
 	uint speed;
 	uint health_points;

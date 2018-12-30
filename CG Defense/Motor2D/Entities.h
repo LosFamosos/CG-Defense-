@@ -30,7 +30,7 @@ public:
 	//Print the entity
 	void Draw();
 
-	bool Update() { return true; }
+	virtual bool Update() { return true; }
 
 	//Delete dynamic memory etc
 	bool CleanUp();
@@ -43,12 +43,14 @@ public:
 	//Position of the entity
 	iPoint position;
 
+	//Animation we want to draw
+	Animation* animation = nullptr;
+
 protected:
 
 	EntityType entity_type = EntityType::NONE;
 
-	//Animation we want to draw
-	Animation* animation= nullptr;
+	
 
 	//Texutre
 	SDL_Texture* texture=nullptr;

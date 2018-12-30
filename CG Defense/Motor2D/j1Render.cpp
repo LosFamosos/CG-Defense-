@@ -78,14 +78,6 @@ bool j1Render::Update(float dt)
 {
 	BROFILER_CATEGORY("Update(); - Render;", Profiler::Color::Orchid);
 
-	if (App->input->GetKey(SDL_SCANCODE_J) == KEY_REPEAT)
-	{
-		uint x, y;
-		App->win->GetWindowSize(x, y);
-		LOG("Window %u %u", x, y);
-		LOG("Camera %u %u ", camera.w, camera.h);
-
-	}
 
 	if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN && debug == false) {
 		debug = !debug;
