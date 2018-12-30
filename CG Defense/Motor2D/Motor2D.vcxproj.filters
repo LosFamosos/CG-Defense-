@@ -53,6 +53,15 @@
     <ClCompile Include="j1Particles.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Entities.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="j1EntityManager.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
@@ -136,6 +145,18 @@
     <ClInclude Include="j1Particles.h">
       <Filter>Modules</Filter>
     </ClInclude>
+    <ClInclude Include="Entities.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="j1EntityManager.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Tower.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
@@ -159,6 +180,9 @@
     </Filter>
     <Filter Include="Scene">
       <UniqueIdentifier>{bfddc6ba-7cf9-46e3-981d-744b746c2785}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities">
+      <UniqueIdentifier>{f55373f5-c6f8-4215-bf1b-a152f7ce19ab}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

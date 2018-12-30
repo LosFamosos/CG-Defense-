@@ -17,6 +17,7 @@
 #include "j1Pathfinding.h"
 #include "j1Fonts.h"
 #include "j1Gui.h"
+#include "j1EntityManager.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -35,7 +36,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	pathfinding = new j1PathFinding();
 	fonts = new j1Fonts();
 	gui = new j1Gui();
-
+	entity_manager = new j1EntityManager();
 	collision = new j1Collision();
 
 	// Ordered for awake / Start / Update
@@ -50,6 +51,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(pathfinding);
 	AddModule(fonts);
 	AddModule(gui);
+	AddModule(entity_manager);
 	
 	// render last to swap buffer
 	AddModule(render);
@@ -148,9 +150,6 @@ bool j1App::Update()
 		ret = PostUpdate();
 
 	
-	if (App->input->GetKey(SDL_SCANCODE_K) == j1KeyState::KEY_DOWN) {
-		framerate_cap_activated = !framerate_cap_activated;
-	}
 	if (framerate_cap_activated) {
 		framerate_cap = 30;
 	}
