@@ -20,10 +20,14 @@ j1Scene::j1Scene() : j1Module()
 {
 	name.create("scene");
 
-	mainmenu = "Main_menu.tmx";
+	mainmenu = "Map1.0.tmx";
 
-	current_base_health = { 0,0,1100,50 };
-	left_base_health = { 0,0,1100,50 };
+	current_base_health = { 0,0,960,50 };
+	left_base_health = { 0,0,960,50 };
+
+	basic_cooldown_rect = {300,500,115,66};
+	medium_cooldown_rect = { 500,500,115,66 };
+	pro_cooldown_rect = { 700,500,115,66 };
 
 }
 
@@ -58,6 +62,11 @@ bool j1Scene::Start()
 
 	game_timer.Start();
 
+	basic_timer = SDL_GetTicks();
+	medium_timer = SDL_GetTicks();
+	pro_timer = SDL_GetTicks();
+	
+
 	return true;
 }
 
@@ -74,6 +83,8 @@ bool j1Scene::PreUpdate()
 // Called each loop iteration
 bool j1Scene::Update(float dt)
 {
+	static bool Antonio = game_ui.Start();
+
 	if (SceneLoaded) {
 		SceneLoaded = false;
 		PlayerExists = true;//no hace falta pero por si acaso
@@ -83,11 +94,10 @@ bool j1Scene::Update(float dt)
 	{
 		App->entity_manager->SpawnEnemy(EnemyType::ENEMY_EASY);
 		timer = SDL_GetTicks();
-
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN)
-		current_base_health.w -= 100;
+		App->entity_manager->CreateTower(TowerType::TOWER_PRO);
 
 	//Draw the map
 	current_map->Draw();
@@ -96,6 +106,7 @@ bool j1Scene::Update(float dt)
 
 	if (current_base_health.w <= 0)
 		Restart();
+
 
 	return true;
 }
@@ -110,11 +121,20 @@ bool j1Scene::PostUpdate()
 
 	//Draw base health
 	App->render->DrawQuad(left_base_health,255,0,0,255);
-
 	App->render->DrawQuad(current_base_health, 0, 255, 0, 255);
+
+	basic_cooldown_rect.w = max(0, 115 -115 * float(float(SDL_GetTicks() - basic_timer) / basic_cooldown));
+	medium_cooldown_rect.w = max(0, 115 - 115 * float(float(SDL_GetTicks() - medium_timer) / medium_cooldown));
+	pro_cooldown_rect.w = max(0, 115 - 115 * float(float(SDL_GetTicks() - pro_timer) / pro_cooldown));
+
+	//Draw cooldowns
+	App->render->DrawQuad(basic_cooldown_rect, 255, 0, 0, 100);
+	App->render->DrawQuad(medium_cooldown_rect, 255, 0, 0, 100);
+	App->render->DrawQuad(pro_cooldown_rect, 255, 0, 0, 100);
 
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
+
 	return ret;
 }
 
@@ -200,7 +220,7 @@ void j1Scene::Restart()
 {
 	App->entity_manager->CleanEnemies();
 	game_timer.start_time = SDL_GetTicks();
-	current_base_health.w = 1100;
+	current_base_health.w = 960;
 
 }
 
@@ -217,7 +237,24 @@ void j1Scene::FadeToBlack(const char* leveltoload)
 
 void j1Scene::ButtonAction(UiButton* button)
 {
-	int i = 0;
+	switch (button->function)
+	{
+	case ButtonFunction::ADD_BASIC_TOWER:
+		App->entity_manager->CreateTower(TowerType::TOWER_BASIC);
+		break;
+	case ButtonFunction::ADD_MEDIUM_TOWER:
+		App->entity_manager->CreateTower(TowerType::TOWER_MEDIUM);
+		break;
+	case ButtonFunction::ADD_PRO_TOWER:
+		App->entity_manager->CreateTower(TowerType::TOWER_PRO);
+		break;
+	case ButtonFunction::RESTART:
+		Restart();
+		break;
+
+	default:
+		break;
+	}
 }
 
 
@@ -254,4 +291,23 @@ void GameTimer::ChangeState()
 {
 	minutes_label->active = !minutes_label->active;
 	seconds_label->active = !seconds_label->active;
+}
+
+//UI~~~~~~~~~~~~~~~~~~~~~~~~
+bool GameUi::Start()
+{
+
+	restart_button = App->gui->AddButton({100,500},ButtonSize::BIG, App->scene, ButtonFunction::RESTART);
+	restart_button->NestImage({42,20},App->gui->restart_image);
+
+	basic_tower_button= App->gui->AddButton({300,500 },ButtonSize::BIG, App->scene, ButtonFunction::ADD_BASIC_TOWER);
+	basic_tower_button->NestImage({37,5},App->gui->basic_tower_image);
+
+	medium_tower_button= App->gui->AddButton({ 500,500 }, ButtonSize::BIG, App->scene, ButtonFunction::ADD_MEDIUM_TOWER);
+	medium_tower_button->NestImage({40,5}, App->gui->medium_tower_image);
+
+	pro_tower_button=App->gui->AddButton({ 700,500 }, ButtonSize::BIG, App->scene, ButtonFunction::ADD_PRO_TOWER);
+	pro_tower_button->NestImage({40,5},App->gui->pro_tower_image);
+
+	return true;
 }

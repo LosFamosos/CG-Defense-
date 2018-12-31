@@ -35,6 +35,16 @@ struct GameTimer
 	void ChangeState();
 };
 
+struct GameUi {
+
+	bool Start();
+
+	UiButton* restart_button;
+	UiButton* basic_tower_button;
+	UiButton* medium_tower_button;
+	UiButton* pro_tower_button;
+};
+
 enum class FadeStep {
 	fade_none,
 	fade_to_black,
@@ -90,6 +100,7 @@ private:
 
 public:
 
+	//Base hp
 	SDL_Rect current_base_health;
 	SDL_Rect left_base_health;
 
@@ -97,6 +108,20 @@ public:
 	uint timer;
 	uint enemy_spawn_frequency;
 	uint current_time;
+
+	//sections to draw cooldown
+	SDL_Rect basic_cooldown_rect;
+	SDL_Rect medium_cooldown_rect;
+	SDL_Rect pro_cooldown_rect;
+
+	//cooldown
+	uint basic_cooldown=5000;
+	uint medium_cooldown = 10000;
+	uint pro_cooldown=10000;
+	
+	uint basic_timer=0;
+	uint medium_timer=0;
+	uint pro_timer=0;
 
 
 	const char*	mainmenu;
@@ -117,6 +142,8 @@ public:
 	bool findplayer = false;
 
 private:
+
+	GameUi game_ui;
 
 	GameTimer game_timer;
 

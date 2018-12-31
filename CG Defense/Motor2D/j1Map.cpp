@@ -80,7 +80,7 @@ void j1Map::Draw()
 						SDL_Rect rect = tileset->GetTileRect(tile_id);
 						iPoint pos = MapToWorld(x, y);
 						
-						App->render->Blit(tileset->texture,pos.x*extra_scale, pos.y*extra_scale, &rect, parallax, 0, SDL_FLIP_NONE, NULL, NULL, extra_scale);
+						App->render->Blit(tileset->texture,pos.x*1.5, pos.y*1.5, &rect, parallax, 0, SDL_FLIP_NONE, NULL, NULL, 1.5);
 
 					}
 				}

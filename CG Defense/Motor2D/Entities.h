@@ -2,11 +2,11 @@
 #define __Entity__H__
 
 #include "p2Point.h"
+#include "Animation.h"
 
 class j1EntityManager;
 struct SDL_Texture;
 struct SDL_Rect;
-class Animation;
 struct Collider;
 
 enum class EntityType {
@@ -54,7 +54,7 @@ public:
 	iPoint position;
 
 	//Animation we want to draw
-	Animation* animation = nullptr;
+	Animation animation;
 
 protected:
 

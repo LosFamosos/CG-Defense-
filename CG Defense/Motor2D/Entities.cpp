@@ -24,5 +24,5 @@ bool Entity::CleanUp()
 
 void Entity::Draw()
 {
-	App->render->Blit(texture, position.x, position.y, &animation->GetCurrentFrame());
+	App->render->Blit(texture, position.x, position.y, &animation.GetCurrentFrame());
 }

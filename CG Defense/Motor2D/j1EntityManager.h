@@ -64,6 +64,8 @@ public:
 
 	//TOWERS animations
 	Animation basic_tower_animation;
+	Animation medium_tower_animation;
+	Animation pro_tower_animation;
 
 
 	//ENEMY Animations

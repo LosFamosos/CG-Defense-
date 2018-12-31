@@ -15,24 +15,11 @@ j1Gui::j1Gui() : j1Module()
 
 	pugi::xml_parse_result result=ui_data.load_file("UiConfig.xml");
 	
-	pugi::xml_node icon_data= ui_data.child("properties").child("icons");
 
-	settings = { icon_data.child("settings").attribute("x").as_int(),
-				icon_data.child("settings").attribute("y").as_int(),
-				icon_data.child("settings").attribute("w").as_int(),
-				icon_data.child("settings").attribute("h").as_int() };
-
-	exit = { icon_data.child("exit").attribute("x").as_int(),
-				icon_data.child("exit").attribute("y").as_int(),
-				icon_data.child("exit").attribute("w").as_int(),
-				icon_data.child("exit").attribute("h").as_int() };
-
-	gem = { icon_data.child("gem").attribute("x").as_int(),
-				icon_data.child("gem").attribute("y").as_int(),
-				icon_data.child("gem").attribute("w").as_int(),
-				icon_data.child("gem").attribute("h").as_int() };
-
-
+	basic_tower_image = {0,0,43,47};
+	medium_tower_image = { 49,0,43,47 };
+	pro_tower_image = { 96,0,43,47 };
+	restart_image = {48,50,33,28};
 
 }
 
@@ -329,17 +316,9 @@ UiButton::UiButton(iPoint position, ButtonSize size, j1Module* callback, ButtonF
 	}
 
 
-	section_idle = {	button_data.child("idle_section").attribute("x").as_int(),
-						button_data.child("idle_section").attribute("y").as_int(),
-						button_data.child("idle_section").attribute("w").as_int(),
-						button_data.child("idle_section").attribute("h").as_int() };
+	section_idle = { 0,78,115,66 };
+	section_selected = {0,144,115,66};
 
-	section_selected = { button_data.child("active_section").attribute("x").as_int(),
-						button_data.child("active_section").attribute("y").as_int(),
-						button_data.child("active_section").attribute("w").as_int(),
-						button_data.child("active_section").attribute("h").as_int() };
-
-	
 	action_area.w = section_idle.w;
 	action_area.h = section_idle.h;
 

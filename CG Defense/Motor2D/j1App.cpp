@@ -31,11 +31,12 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	render = new j1Render();
 	tex = new j1Textures();
 	audio = new j1Audio();
+	gui = new j1Gui();
 	scene = new j1Scene();
 	map = new j1Map();
 	pathfinding = new j1PathFinding();
 	fonts = new j1Fonts();
-	gui = new j1Gui();
+	
 	entity_manager = new j1EntityManager();
 	collision = new j1Collision();
 

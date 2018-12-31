@@ -18,20 +18,41 @@ j1EntityManager::j1EntityManager()
 	easy_enemy_config.damage = 5;
 	easy_enemy_config.speed = 5;
 
-	medium_enemy_config.hp = 20;
-	medium_enemy_config.damage = 5;
-	medium_enemy_config.speed = 5;
+	medium_enemy_config.hp = 50;
+	medium_enemy_config.damage = 10;
+	medium_enemy_config.speed = 3;
 
-	hard_enemy_config.hp = 20;
-	hard_enemy_config.damage = 5;
-	hard_enemy_config.speed = 5;
+	hard_enemy_config.hp = 100;
+	hard_enemy_config.damage = 30;
+	hard_enemy_config.speed = 2;
 
 	//Turret animations
-	basic_tower_animation.PushBack({0,0,50,50});
+	basic_tower_animation.PushBack({0,0,43,47});
+	medium_tower_animation.PushBack({ 49,0,43,47 });
+	pro_tower_animation.PushBack({ 96,0,43,47 });
 
 	//Animations pushbacks
-	easy_enemy_animation.PushBack({0,0,170,98});
-	medium_enemy_animation.PushBack({ 0,110,170,98 });
+	easy_enemy_animation.PushBack({0,47,33,22});
+	easy_enemy_animation.PushBack({ 36,47,33,22 });
+	easy_enemy_animation.PushBack({ 75,47,33,22 });
+	easy_enemy_animation.PushBack({ 111,47,33,22 });
+	easy_enemy_animation.loop = true;
+	easy_enemy_animation.speed = 0.3f;
+
+	medium_enemy_animation.PushBack({ 0,83,33,22 });
+	medium_enemy_animation.PushBack({ 36,83,33,22 });
+	medium_enemy_animation.PushBack({ 75,83,33,22 });
+	medium_enemy_animation.PushBack({ 111,83,33,22 });
+	medium_enemy_animation.loop = true;
+	medium_enemy_animation.speed = 0.3f;
+
+	hard_enemy_animation.PushBack({ 0,119,33,22 });
+	hard_enemy_animation.PushBack({ 36,119,33,22 });
+	hard_enemy_animation.PushBack({ 75,119,33,22 });
+	hard_enemy_animation.PushBack({ 111,119,33,22 });
+	hard_enemy_animation.loop = true;
+	hard_enemy_animation.speed = 0.3f;
+
 }
 
 
@@ -39,7 +60,7 @@ j1EntityManager::j1EntityManager()
 bool j1EntityManager::Start()
 {
 	//Load texutre
-	entities_texture = App->tex->Load("textures/esketit.png");
+	entities_texture = App->tex->Load("textures/Turrets&Enemies.png");
 	assert(entities_texture != nullptr, "Entities texture not loaded");
 
 	for (int i = 0; i < MAX_ENEMIES; ++i)
@@ -53,9 +74,7 @@ bool j1EntityManager::Start()
 		tower_list[i] = new Tower();
 		entities_list.add(tower_list[i]);
 		tower_list[i]->tower_type = TowerType::TOWER_NONE;
-		tower_list[i]->animation = &basic_tower_animation;
-		tower_list[i]->active = true;
-		tower_list[i]->position = {50*i,500};
+		tower_list[i]->position = {80*i,270};
 	}
 
 	return true;
@@ -92,12 +111,12 @@ bool j1EntityManager::SpawnEnemy(EnemyType enemy_type)
 {
 	int i = rand() % 2;
 
-	iPoint new_position = { 500,0 };
+	iPoint new_position = { 960,0 };
 
 	if (i == 0)
-		new_position.y = 80;
+		new_position.y = 170;
 	else if (i == 1)
-		new_position.y = 175;
+		new_position.y = 390;
 
 	Enemy* enemy = nullptr;
 	for (int i = 0; i < MAX_ENEMIES; ++i)
@@ -114,7 +133,7 @@ bool j1EntityManager::SpawnEnemy(EnemyType enemy_type)
 		switch (enemy_type)
 		{
 		case EnemyType::ENEMY_EASY:
-			enemy->animation = &easy_enemy_animation;
+			enemy->animation = easy_enemy_animation;
 
 			enemy->health_points = easy_enemy_config.hp;
 			enemy->speed = easy_enemy_config.speed;
@@ -127,7 +146,7 @@ bool j1EntityManager::SpawnEnemy(EnemyType enemy_type)
 			break;
 
 		case EnemyType::ENEMY_MEDIUM:
-			enemy->animation = &medium_enemy_animation;
+			enemy->animation = medium_enemy_animation;
 
 			enemy->health_points = medium_enemy_config.hp;
 			enemy->speed = medium_enemy_config.speed;
@@ -139,7 +158,7 @@ bool j1EntityManager::SpawnEnemy(EnemyType enemy_type)
 			break;
 
 		case EnemyType::ENEMY_HARD:
-			enemy->animation = &medium_enemy_animation;
+			enemy->animation =hard_enemy_animation;
 
 			enemy->health_points = hard_enemy_config.hp;
 			enemy->speed = hard_enemy_config.speed;
@@ -173,23 +192,30 @@ bool j1EntityManager::CreateTower(TowerType tower_type)
 			break;
 		}
 	}
-	tower->tower_type = tower_type;
-	switch (tower_type)
+	if (tower != nullptr)
 	{
-	case TowerType::TOWER_BASIC:
-		tower->attack_speed = 3000;
-		break;
-	case TowerType::TOWER_MEDIUM:
-		tower->attack_speed = 3000;
-		break;
-	case TowerType::TOWER_PRO:
-		tower->attack_speed = 3000;
-		break;
-	case TowerType::TOWER_NONE:
-		break;
+		tower->tower_type = tower_type;
+		switch (tower_type)
+		{
+		case TowerType::TOWER_BASIC:
+			tower->attack_speed = 3000;
+			tower->animation = basic_tower_animation;
+			break;
+		case TowerType::TOWER_MEDIUM:
+			tower->attack_speed = 3000;
+			tower->animation = medium_tower_animation;
+			break;
+		case TowerType::TOWER_PRO:
+			tower->attack_speed = 3000;
+			tower->animation = pro_tower_animation;
+			break;
+		case TowerType::TOWER_NONE:
+			break;
+		}
+		tower->active = true;
+		tower = nullptr;
 	}
-	tower->active = true;
-	tower = nullptr;
+	return true;
 }
 
 bool j1EntityManager::CleanEnemies()

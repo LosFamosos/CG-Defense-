@@ -30,15 +30,10 @@ enum class ButtonSize {
 };
 
 enum class ButtonFunction {
-	CLOSE_APP,
-	HIDE_PAUSE,
-	HIDE_SETTINGS,
-	LOAD_MAIN_MENU,
-	LOAD_LEVEL1,
-	SAVE_GAME,
-	LOAD_GAME,
-	OPEN_SETTINGS,
-	OPEN_GITHUB,
+	ADD_BASIC_TOWER,
+	ADD_MEDIUM_TOWER,
+	ADD_PRO_TOWER,
+	RESTART,
 	NONE
 };
 
@@ -316,7 +311,7 @@ public:
 	// Gui creation functions
 	UiImage*	AddImage(iPoint position, SDL_Rect section);
 	UiLabel*	AddLabel(iPoint position, char* label, _TTF_Font* font = App->fonts->default);
-	UiButton*	AddButton(iPoint position, ButtonSize size, j1Module* callback = nullptr, ButtonFunction function = ButtonFunction::NONE);
+	UiButton*	AddButton(iPoint position, ButtonSize size=ButtonSize::BIG, j1Module* callback = nullptr, ButtonFunction function = ButtonFunction::NONE);
 	UiCheckBox*	AddCheckBox(iPoint position, bool * boolean, char* label);
 	UiWindow*	AddWindow(iPoint position);
 	UiDragBar*	AddDragBar(iPoint position);
@@ -329,11 +324,14 @@ public:
 	pugi::xml_document ui_data;
 
 	//Icons 
-	SDL_Rect settings;
-	SDL_Rect exit;
-	SDL_Rect gem;
 	Mix_Chunk* button_hover;
 	Mix_Chunk* button_click;
+
+	//drawing sections
+	SDL_Rect basic_tower_image;
+	SDL_Rect medium_tower_image;
+	SDL_Rect pro_tower_image;
+	SDL_Rect restart_image;
 
 private:
 

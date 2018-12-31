@@ -17,11 +17,11 @@ public:
 
 	TowerType tower_type;
 
-	uint attack_speed;
+	uint attack_speed=0;
 
 private:
 
-	uint attack_timer;
+	uint attack_timer=0;
 
 
 	

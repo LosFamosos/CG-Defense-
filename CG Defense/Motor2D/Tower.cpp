@@ -8,7 +8,6 @@ Tower::Tower():Entity(EntityType::TOWER)
 
 	tower_type = TowerType::TOWER_NONE;
 
-
 	active = false;
 
 }
