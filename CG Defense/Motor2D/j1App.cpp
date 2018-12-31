@@ -36,7 +36,8 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	map = new j1Map();
 	pathfinding = new j1PathFinding();
 	fonts = new j1Fonts();
-	
+	particles = new j1Particles();
+
 	entity_manager = new j1EntityManager();
 	collision = new j1Collision();
 
@@ -51,6 +52,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(collision);
 	AddModule(pathfinding);
 	AddModule(fonts);
+	AddModule(particles);
 	AddModule(gui);
 	AddModule(entity_manager);
 	

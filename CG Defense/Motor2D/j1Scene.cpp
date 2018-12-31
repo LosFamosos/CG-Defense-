@@ -92,13 +92,18 @@ bool j1Scene::Update(float dt)
 	
 	if (SDL_GetTicks() - timer > enemy_spawn_frequency)
 	{
-		App->entity_manager->SpawnEnemy(EnemyType::ENEMY_EASY);
+		if (SDL_GetTicks()-current_time<7000)
+			App->entity_manager->SpawnEnemy(EnemyType::ENEMY_EASY);
+
+		else if (SDL_GetTicks()-current_time>7000 && SDL_GetTicks() - current_time<13000)
+			App->entity_manager->SpawnEnemy(EnemyType::ENEMY_MEDIUM);
+		else 
+			App->entity_manager->SpawnEnemy(EnemyType::ENEMY_HARD);
+
 		timer = SDL_GetTicks();
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN)
-		App->entity_manager->CreateTower(TowerType::TOWER_PRO);
-
+	
 	//Draw the map
 	current_map->Draw();
 
@@ -218,9 +223,16 @@ void j1Scene::UpdateFade()
 
 void j1Scene::Restart()
 {
+	App->entity_manager->CleanTowers();
 	App->entity_manager->CleanEnemies();
 	game_timer.start_time = SDL_GetTicks();
 	current_base_health.w = 960;
+
+	basic_timer = SDL_GetTicks();
+	medium_timer = SDL_GetTicks();
+	pro_timer = SDL_GetTicks();
+
+	current_time = SDL_GetTicks();
 
 }
 
@@ -240,13 +252,25 @@ void j1Scene::ButtonAction(UiButton* button)
 	switch (button->function)
 	{
 	case ButtonFunction::ADD_BASIC_TOWER:
-		App->entity_manager->CreateTower(TowerType::TOWER_BASIC);
+		if (SDL_GetTicks() - basic_timer > basic_cooldown)
+		{
+			App->entity_manager->CreateTower(TowerType::TOWER_BASIC);
+			basic_timer = SDL_GetTicks();
+		}
 		break;
 	case ButtonFunction::ADD_MEDIUM_TOWER:
-		App->entity_manager->CreateTower(TowerType::TOWER_MEDIUM);
+		if (SDL_GetTicks() - medium_timer > medium_cooldown)
+		{
+			App->entity_manager->CreateTower(TowerType::TOWER_MEDIUM);
+			medium_timer = SDL_GetTicks();
+		}
 		break;
 	case ButtonFunction::ADD_PRO_TOWER:
-		App->entity_manager->CreateTower(TowerType::TOWER_PRO);
+		if (SDL_GetTicks() - pro_timer > pro_cooldown)
+		{
+			App->entity_manager->CreateTower(TowerType::TOWER_PRO);
+			pro_timer = SDL_GetTicks();
+		}
 		break;
 	case ButtonFunction::RESTART:
 		Restart();

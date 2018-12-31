@@ -43,7 +43,7 @@ public:
 	//Delete dynamic memory etc
 	bool CleanUp();
 
-	void OnCollision(Collider* c1, Collider* c2){}
+	virtual void OnCollision(Collider* , Collider* ){}
 
 public:
 

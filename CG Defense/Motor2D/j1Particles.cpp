@@ -93,6 +93,7 @@ void j1Particles::AddParticle(const Particle& particle, int x, int y, COLLIDER_T
 			p->sound = particle.sound;
 			if (collider_type != COLLIDER_NONE)
 				p->collider = App->collision->AddCollider(p->anim.GetCurrentFrame(), collider_type, this);
+			p->collider->active = true;
 			active[i] = p;
 			//active[i]->texture = particle.texture;
 			break;

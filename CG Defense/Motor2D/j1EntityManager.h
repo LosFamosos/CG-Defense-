@@ -11,14 +11,6 @@
 #include "Animation.h"
 #include "Tower.h"
 
-enum class Stage {
-	STAGE_1,
-	STAGE_2,
-	STAGE_3,
-	STAGE_4,
-	STAGE_NONE
-};
-
 struct EnemyConfig {
 	uint speed;
 	uint damage;
@@ -56,11 +48,9 @@ public:
 	EnemyConfig medium_enemy_config;
 	EnemyConfig hard_enemy_config;
 
-
-	Stage actual_stage;
-
 	//Textures for the enemies and the turrets
 	SDL_Texture* entities_texture;
+	SDL_Texture* particles_texture;
 
 	//TOWERS animations
 	Animation basic_tower_animation;

@@ -115,9 +115,9 @@ public:
 	SDL_Rect pro_cooldown_rect;
 
 	//cooldown
-	uint basic_cooldown=5000;
-	uint medium_cooldown = 10000;
-	uint pro_cooldown=10000;
+	uint basic_cooldown=3000;
+	uint medium_cooldown = 6000;
+	uint pro_cooldown=9000;
 	
 	uint basic_timer=0;
 	uint medium_timer=0;
@@ -153,7 +153,7 @@ private:
 	SDL_Rect	fade_rect ;				//Square
 	FadeStep	fade_step;				//Fading vs unfading
 	p2SString	level_to_load;			//Level we want to load
-	iPoint	load_position;
+	iPoint		load_position;
 
 };
 

@@ -15,6 +15,9 @@ Enemy::Enemy():Entity(EntityType::ENEMY)
 
 	collider = App->collision->AddCollider({ 0,0,33,22 },COLLIDER_ENEMY , this);
 	collider->active = false;
+
+	
+
 }
 
 bool Enemy::Update()
@@ -25,7 +28,7 @@ bool Enemy::Update()
 
 		collider->SetPos(position.x, position.y);
 
-		if (health_points < 0)
+		if (health_points <= 0)
 			Die();
 
 		else if (position.x < -App->render->camera.x)
@@ -35,6 +38,7 @@ bool Enemy::Update()
 		}
 	}
 
+	
 	return true;
 }
 
@@ -49,5 +53,5 @@ void Enemy::Die()
 
 void Enemy::OnCollision(Collider* c1, Collider* c2)
 {
-	health_points -= 1;
+  	health_points -= 5;
 }

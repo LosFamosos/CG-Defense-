@@ -11,20 +11,19 @@
 
 j1EntityManager::j1EntityManager()
 {
-	actual_stage = Stage::STAGE_NONE;
 
 	//Enemy states
 	easy_enemy_config.hp = 20;
 	easy_enemy_config.damage = 5;
-	easy_enemy_config.speed = 5;
+	easy_enemy_config.speed = 6;
 
-	medium_enemy_config.hp = 50;
-	medium_enemy_config.damage = 10;
-	medium_enemy_config.speed = 3;
+	medium_enemy_config.hp = 70;
+	medium_enemy_config.damage = 15;
+	medium_enemy_config.speed =5;
 
-	hard_enemy_config.hp = 100;
+	hard_enemy_config.hp = 140;
 	hard_enemy_config.damage = 30;
-	hard_enemy_config.speed = 2;
+	hard_enemy_config.speed = 4;
 
 	//Turret animations
 	basic_tower_animation.PushBack({0,0,43,47});
@@ -62,6 +61,8 @@ bool j1EntityManager::Start()
 	//Load texutre
 	entities_texture = App->tex->Load("textures/Turrets&Enemies.png");
 	assert(entities_texture != nullptr, "Entities texture not loaded");
+
+	particles_texture = App->tex->Load("gui/atlas.png");
 
 	for (int i = 0; i < MAX_ENEMIES; ++i)
 	{
@@ -104,6 +105,9 @@ bool j1EntityManager::Update(float dt)
 
 bool j1EntityManager::CleanUp()
 {
+	App->tex->UnLoad(entities_texture);
+	App->tex->UnLoad(particles_texture);
+
 	return true;
 }
 
@@ -198,15 +202,18 @@ bool j1EntityManager::CreateTower(TowerType tower_type)
 		switch (tower_type)
 		{
 		case TowerType::TOWER_BASIC:
-			tower->attack_speed = 3000;
+			tower->tower_type = TowerType::TOWER_BASIC;
+			tower->attack_speed = 200;
 			tower->animation = basic_tower_animation;
 			break;
 		case TowerType::TOWER_MEDIUM:
-			tower->attack_speed = 3000;
+			tower->tower_type = TowerType::TOWER_MEDIUM;
+			tower->attack_speed =1000;
 			tower->animation = medium_tower_animation;
 			break;
 		case TowerType::TOWER_PRO:
-			tower->attack_speed = 3000;
+			tower->tower_type = TowerType::TOWER_PRO;
+			tower->attack_speed = 1500;
 			tower->animation = pro_tower_animation;
 			break;
 		case TowerType::TOWER_NONE:

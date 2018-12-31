@@ -15,12 +15,14 @@ public:
 
 	void Die();
 
-	void OnCollision(Collider* c1, Collider* c2);
+	void OnCollision(Collider* c1, Collider* c2)override;
 
 public:
 
+	
+
 	uint speed;
-	uint health_points;
+	int health_points;
 	uint damage;
 
 	EnemyType enemy_type;

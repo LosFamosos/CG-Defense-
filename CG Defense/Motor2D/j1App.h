@@ -95,7 +95,8 @@ public:
 	j1PathFinding*		pathfinding = nullptr;
 	j1Fonts*			fonts		= nullptr;
 	j1Gui*				gui			= nullptr;
-	
+	j1Particles*		particles	= nullptr;
+
 	j1EntityManager*    entity_manager	= nullptr;
 
 public:
