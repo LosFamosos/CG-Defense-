@@ -22,7 +22,11 @@ bool Enemy::Update()
 		position.x -= speed;
 
 		collider->SetPos(position.x, position.y);
+
+		if (health_points < 0)
+			Die();
 	}
+
 	return true;
 }
 
@@ -33,4 +37,9 @@ void Enemy::Die()
 
 	collider->active = false;
 
+}
+
+void Enemy::OnCollision(Collider* c1, Collider* c2)
+{
+	health_points -= 1;
 }

@@ -263,7 +263,7 @@ void UiLabel::CleanUp()
 void UiLabel::Draw()
 {
 	//White
-	SDL_Color color = { 150,100,220,0 };
+	SDL_Color color = { 0,0,0,0 };
 
 	SDL_Texture* texture = App->fonts->Print(text.GetString(), color, font);
 

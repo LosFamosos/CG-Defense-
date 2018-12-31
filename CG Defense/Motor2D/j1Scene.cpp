@@ -22,6 +22,9 @@ j1Scene::j1Scene() : j1Module()
 
 	mainmenu = "Main_menu.tmx";
 
+	current_base_health = { 0,0,1100,50 };
+	left_base_health = { 0,0,1100,50 };
+
 }
 
 // Destructor
@@ -84,12 +87,15 @@ bool j1Scene::Update(float dt)
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN)
-		Restart();
+		current_base_health.w -= 100;
 
 	//Draw the map
 	current_map->Draw();
 
 	game_timer.Update();
+
+	if (current_base_health.w <= 0)
+		Restart();
 
 	return true;
 }
@@ -101,6 +107,11 @@ bool j1Scene::PostUpdate()
 
 	//Fade
 	UpdateFade();
+
+	//Draw base health
+	App->render->DrawQuad(left_base_health,255,0,0,255);
+
+	App->render->DrawQuad(current_base_health, 0, 255, 0, 255);
 
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
@@ -189,6 +200,7 @@ void j1Scene::Restart()
 {
 	App->entity_manager->CleanEnemies();
 	game_timer.start_time = SDL_GetTicks();
+	current_base_health.w = 1100;
 
 }
 
@@ -215,8 +227,8 @@ void j1Scene::ButtonAction(UiButton* button)
 
 bool GameTimer::Start()
 {
-	seconds_label = App->gui->AddLabel({ 500,30 }, "");
-	minutes_label = App->gui->AddLabel({ 420,30 }, "");
+	seconds_label = App->gui->AddLabel({ 500,60 }, "");
+	minutes_label = App->gui->AddLabel({ 420,60 }, "");
 
 	start_time = SDL_GetTicks();
 

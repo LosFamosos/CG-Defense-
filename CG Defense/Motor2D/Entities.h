@@ -15,11 +15,18 @@ enum class EntityType {
 	NONE
 };
 
-enum EnemyType {
+enum class EnemyType {
 	ENEMY_EASY,
 	ENEMY_MEDIUM,
 	ENEMY_HARD,
 	ENEMY_NONE
+};
+
+enum class TowerType {
+	TOWER_BASIC,
+	TOWER_MEDIUM,
+	TOWER_PRO,
+	TOWER_NONE
 };
 
 class Entity

@@ -13,10 +13,18 @@ public:
 
 	void Shoot();
 
+public:
+
+	TowerType tower_type;
+
+	uint attack_speed;
+
 private:
 
 	uint attack_timer;
-	uint attack_speed;
+
+
+	
 };
 
 #endif // ! __TOWER_H__

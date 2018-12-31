@@ -26,6 +26,9 @@ j1EntityManager::j1EntityManager()
 	hard_enemy_config.damage = 5;
 	hard_enemy_config.speed = 5;
 
+	//Turret animations
+	basic_tower_animation.PushBack({0,0,50,50});
+
 	//Animations pushbacks
 	easy_enemy_animation.PushBack({0,0,170,98});
 	medium_enemy_animation.PushBack({ 0,110,170,98 });
@@ -45,10 +48,14 @@ bool j1EntityManager::Start()
 		entities_list.add(enemies_list[i]);
 	}
 
-	for (int i = 0; i < MAX_ENEMIES; ++i)
+	for (int i = 0; i < MAX_TOWERS; ++i)
 	{
-		enemies_list[i] = new Enemy();
-		entities_list.add(enemies_list[i]);
+		tower_list[i] = new Tower();
+		entities_list.add(tower_list[i]);
+		tower_list[i]->tower_type = TowerType::TOWER_NONE;
+		tower_list[i]->animation = &basic_tower_animation;
+		tower_list[i]->active = true;
+		tower_list[i]->position = {50*i,500};
 	}
 
 	return true;
@@ -73,17 +80,6 @@ bool j1EntityManager::Update(float dt)
 			enemies_list[i]->Die();
 	}
 
-//test
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-		SpawnEnemy(EnemyType::ENEMY_EASY);
-
-	if (App->input->GetKey(SDL_SCANCODE_J) == KEY_DOWN)
-		SpawnEnemy(EnemyType::ENEMY_MEDIUM);
-
-
-	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
-		CleanEnemies();
-
 	return true;
 }
 
@@ -94,7 +90,14 @@ bool j1EntityManager::CleanUp()
 
 bool j1EntityManager::SpawnEnemy(EnemyType enemy_type)
 {
-	iPoint new_position = { 500,rand()%2 * 50 };
+	int i = rand() % 2;
+
+	iPoint new_position = { 500,0 };
+
+	if (i == 0)
+		new_position.y = 80;
+	else if (i == 1)
+		new_position.y = 175;
 
 	Enemy* enemy = nullptr;
 	for (int i = 0; i < MAX_ENEMIES; ++i)
@@ -103,7 +106,6 @@ bool j1EntityManager::SpawnEnemy(EnemyType enemy_type)
 		{
 			enemy = enemies_list[i];
 			
-			LOG("%d", i);
 			break;
 		}
 	}
@@ -111,7 +113,7 @@ bool j1EntityManager::SpawnEnemy(EnemyType enemy_type)
 	{
 		switch (enemy_type)
 		{
-		case ENEMY_EASY:
+		case EnemyType::ENEMY_EASY:
 			enemy->animation = &easy_enemy_animation;
 
 			enemy->health_points = easy_enemy_config.hp;
@@ -124,7 +126,7 @@ bool j1EntityManager::SpawnEnemy(EnemyType enemy_type)
 
 			break;
 
-		case ENEMY_MEDIUM:
+		case EnemyType::ENEMY_MEDIUM:
 			enemy->animation = &medium_enemy_animation;
 
 			enemy->health_points = medium_enemy_config.hp;
@@ -136,7 +138,7 @@ bool j1EntityManager::SpawnEnemy(EnemyType enemy_type)
 			enemy->active = true;
 			break;
 
-		case ENEMY_HARD:
+		case EnemyType::ENEMY_HARD:
 			enemy->animation = &medium_enemy_animation;
 
 			enemy->health_points = hard_enemy_config.hp;
@@ -148,7 +150,7 @@ bool j1EntityManager::SpawnEnemy(EnemyType enemy_type)
 			enemy->active = true;
 			break;
 
-		case ENEMY_NONE:
+		case EnemyType::ENEMY_NONE:
 			break;
 		}
 	}
@@ -158,17 +160,56 @@ bool j1EntityManager::SpawnEnemy(EnemyType enemy_type)
 	return true;
 }
 
-bool j1EntityManager::CleanEnemies()
+bool j1EntityManager::CreateTower(TowerType tower_type)
 {
 
+	Tower* tower = nullptr;
+	for (int i = 0; i < MAX_TOWERS; ++i)
+	{
+		if (tower_list[i]->active == false)
+		{
+			tower = tower_list[i];
+
+			break;
+		}
+	}
+	tower->tower_type = tower_type;
+	switch (tower_type)
+	{
+	case TowerType::TOWER_BASIC:
+		tower->attack_speed = 3000;
+		break;
+	case TowerType::TOWER_MEDIUM:
+		tower->attack_speed = 3000;
+		break;
+	case TowerType::TOWER_PRO:
+		tower->attack_speed = 3000;
+		break;
+	case TowerType::TOWER_NONE:
+		break;
+	}
+	tower->active = true;
+	tower = nullptr;
+}
+
+bool j1EntityManager::CleanEnemies()
+{
 
 	for (int i = 0; i < MAX_ENEMIES; ++i)
 	{
 		enemies_list[i]->Die();
 	}
 
-
-
 	return true;
 }
 
+bool j1EntityManager::CleanTowers()
+{
+
+	for (int i = 0; i < MAX_TOWERS; ++i)
+	{
+		tower_list[i]->active = false;
+	}
+
+	return true;
+}

@@ -37,8 +37,10 @@ public:
 	bool CleanUp();
 
 	bool SpawnEnemy(EnemyType enemy_type);
+	bool CreateTower(TowerType tower_type);
 
 	bool CleanEnemies();
+	bool CleanTowers();
 
 	
 public:
@@ -59,6 +61,10 @@ public:
 
 	//Textures for the enemies and the turrets
 	SDL_Texture* entities_texture;
+
+	//TOWERS animations
+	Animation basic_tower_animation;
+
 
 	//ENEMY Animations
 	Animation easy_enemy_animation;

@@ -5,6 +5,10 @@
 
 Tower::Tower():Entity(EntityType::TOWER)
 {
+
+	tower_type = TowerType::TOWER_NONE;
+
+
 	active = false;
 
 }
@@ -17,5 +21,17 @@ bool Tower::Update()
 
 void Tower::Shoot()
 {
-
+	switch (tower_type)
+	{
+	case TowerType::TOWER_BASIC:
+		break;
+	case TowerType::TOWER_MEDIUM:
+		break;
+	case TowerType::TOWER_PRO:
+		break;
+	case TowerType::TOWER_NONE:
+		break;
+	default:
+		break;
+	}
 }

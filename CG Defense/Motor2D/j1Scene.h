@@ -90,6 +90,9 @@ private:
 
 public:
 
+	SDL_Rect current_base_health;
+	SDL_Rect left_base_health;
+
 	//Enemy spawning tools
 	uint timer;
 	uint enemy_spawn_frequency;

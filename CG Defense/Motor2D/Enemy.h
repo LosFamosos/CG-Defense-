@@ -15,6 +15,8 @@ public:
 
 	void Die();
 
+	void OnCollision(Collider* c1, Collider* c2);
+
 public:
 
 	uint speed;
