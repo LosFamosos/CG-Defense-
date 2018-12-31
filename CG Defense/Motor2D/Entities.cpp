@@ -6,12 +6,12 @@
 #include "j1EntityManager.h"
 #include "Animation.h"
 
-//ENTITIES~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Entity::Entity(EntityType entity_type): entity_type(entity_type)
 {
 	position = { 0,0 };
-	texture = App->entity_manager->entities_texture;
 
+	texture = App->entity_manager->entities_texture;
+	
 }
 
 bool Entity::CleanUp()

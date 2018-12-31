@@ -7,6 +7,7 @@ class j1EntityManager;
 struct SDL_Texture;
 struct SDL_Rect;
 class Animation;
+struct Collider;
 
 enum class EntityType {
 	TOWER,
@@ -35,6 +36,8 @@ public:
 	//Delete dynamic memory etc
 	bool CleanUp();
 
+	void OnCollision(Collider* c1, Collider* c2){}
+
 public:
 
 	//If an entity is not active, basically it doesn't exist
@@ -50,7 +53,6 @@ protected:
 
 	EntityType entity_type = EntityType::NONE;
 
-	
 
 	//Texutre
 	SDL_Texture* texture=nullptr;

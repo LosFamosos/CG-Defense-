@@ -66,14 +66,18 @@ bool j1Collision::PreUpdate()
 
 			c2 = colliders[k];
 
-			if (c1->CheckCollision(c2->rect) == true)
+			if (c1->active==true && c2->active==true)
 			{
-				
-				if (matrix[c1->type][c2->type] && c1->callback)
-					c1->callback->OnCollision(c1, c2);
 
-				if (matrix[c2->type][c1->type] && c2->callback)
-					c2->callback->OnCollision(c2, c1);
+				if (c1->CheckCollision(c2->rect) == true)
+				{
+
+					if (matrix[c1->type][c2->type] && c1->callback)
+						c1->callback->OnCollision(c1, c2);
+
+					if (matrix[c2->type][c1->type] && c2->callback)
+						c2->callback->OnCollision(c2, c1);
+				}
 			}
 		}
 	}
@@ -82,7 +86,7 @@ bool j1Collision::PreUpdate()
 }
 
 // Called before render is available
-bool j1Collision::Update(float dt)
+bool j1Collision::PostUpdate()
 {
 	
 	DebugDraw();
@@ -99,27 +103,30 @@ void j1Collision::DebugDraw()
 	if (debug == false)
 		return;
 
-	Uint8 alpha = 80;
+	Uint8 alpha = 100;
 	for (uint i = 0; i < MAX_COLLIDERS; ++i)
 	{
 		if (colliders[i] == nullptr)
 			continue;
 
-		switch (colliders[i]->type)
+		if (colliders[i]->active == true)
 		{
-		case COLLIDER_NONE: // white
-			App->render->DrawQuad(colliders[i]->rect, 255, 255, 255, alpha);
-			break;
-		case COLLIDER_ENEMY: // red
-			App->render->DrawQuad(colliders[i]->rect, 255, 0, 0, alpha);
-			break;
-		case COLLIDER_TURRETSHOT://blue
-			App->render->DrawQuad(colliders[i]->rect, 0, 0, 1, alpha); 
-			break;
-		case COLLIDER_BASE://green
-			App->render->DrawQuad(colliders[i]->rect, 0, 1, 0, alpha);
-			break;
+			switch (colliders[i]->type)
+			{
+			case COLLIDER_NONE: // white
+				App->render->DrawQuad(colliders[i]->rect, 255, 255, 255, alpha);
+				break;
+			case COLLIDER_ENEMY: // red
+				App->render->DrawQuad(colliders[i]->rect, 255, 0, 0, alpha);
+				break;
+			case COLLIDER_TURRETSHOT://blue
+				App->render->DrawQuad(colliders[i]->rect, 0, 0, 1, alpha);
+				break;
+			case COLLIDER_BASE://green
+				App->render->DrawQuad(colliders[i]->rect, 0, 1, 0, alpha);
+				break;
 
+			}
 		}
 	
 	}
@@ -143,6 +150,22 @@ bool j1Collision::CleanUp()
 }
 
 Collider* j1Collision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module* callback)
+{
+	Collider* ret = nullptr;
+
+	for (uint i = 0; i < MAX_COLLIDERS; ++i)
+	{
+		if (colliders[i] == nullptr)
+		{
+			ret = colliders[i] = new Collider(rect, type, callback);
+			break;
+		}
+	}
+
+	return ret;
+}
+
+Collider* j1Collision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, Entity* callback)
 {
 	Collider* ret = nullptr;
 

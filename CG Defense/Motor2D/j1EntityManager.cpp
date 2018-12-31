@@ -6,6 +6,8 @@
 #include "j1App.h"
 #include "j1Textures.h"
 #include "j1Input.h"
+#include "j1Render.h"
+#include "j1Collision.h"
 
 j1EntityManager::j1EntityManager()
 {
@@ -26,7 +28,6 @@ j1EntityManager::j1EntityManager()
 
 	//Animations pushbacks
 	easy_enemy_animation.PushBack({0,0,170,98});
-
 	medium_enemy_animation.PushBack({ 0,110,170,98 });
 }
 
@@ -37,6 +38,12 @@ bool j1EntityManager::Start()
 	//Load texutre
 	entities_texture = App->tex->Load("textures/esketit.png");
 	assert(entities_texture != nullptr, "Entities texture not loaded");
+
+	for (int i = 0; i < MAX_ENEMIES; ++i)
+	{
+		enemies_list[i] = new Enemy();
+		entities_list.add(enemies_list[i]);
+	}
 
 	for (int i = 0; i < MAX_ENEMIES; ++i)
 	{
@@ -60,12 +67,22 @@ bool j1EntityManager::Update(float dt)
 		}
 	}
 
+	for (int i = 0; i < MAX_ENEMIES; ++i)
+	{
+		if (enemies_list[i]->active == true && enemies_list[i]->position.x < -App->render->camera.x)
+			enemies_list[i]->Die();
+	}
+
 //test
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 		SpawnEnemy(EnemyType::ENEMY_EASY);
 
 	if (App->input->GetKey(SDL_SCANCODE_J) == KEY_DOWN)
 		SpawnEnemy(EnemyType::ENEMY_MEDIUM);
+
+
+	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
+		CleanEnemies();
 
 	return true;
 }
@@ -77,12 +94,15 @@ bool j1EntityManager::CleanUp()
 
 bool j1EntityManager::SpawnEnemy(EnemyType enemy_type)
 {
+	iPoint new_position = { 500,rand()%2 * 50 };
+
 	Enemy* enemy = nullptr;
 	for (int i = 0; i < MAX_ENEMIES; ++i)
 	{
 		if (enemies_list[i]->active == false)
 		{
 			enemy = enemies_list[i];
+			
 			LOG("%d", i);
 			break;
 		}
@@ -98,7 +118,7 @@ bool j1EntityManager::SpawnEnemy(EnemyType enemy_type)
 			enemy->speed = easy_enemy_config.speed;
 			enemy->damage = easy_enemy_config.damage;
 
-			enemy->position = { 50,0 };
+			enemy->position = new_position;
 
 			enemy->active = true;
 
@@ -111,7 +131,7 @@ bool j1EntityManager::SpawnEnemy(EnemyType enemy_type)
 			enemy->speed = medium_enemy_config.speed;
 			enemy->damage = medium_enemy_config.damage;
 
-			enemy->position = { 50,0 };
+			enemy->position = new_position;
 
 			enemy->active = true;
 			break;
@@ -123,7 +143,7 @@ bool j1EntityManager::SpawnEnemy(EnemyType enemy_type)
 			enemy->speed = hard_enemy_config.speed;
 			enemy->damage = hard_enemy_config.damage;
 
-			enemy->position = { 50,0 };
+			enemy->position = new_position;
 
 			enemy->active = true;
 			break;
@@ -132,6 +152,23 @@ bool j1EntityManager::SpawnEnemy(EnemyType enemy_type)
 			break;
 		}
 	}
+	enemy->collider->active = true;
+	enemy->collider->SetPos(new_position.x, new_position.y);
 	enemy = nullptr;
 	return true;
 }
+
+bool j1EntityManager::CleanEnemies()
+{
+
+
+	for (int i = 0; i < MAX_ENEMIES; ++i)
+	{
+		enemies_list[i]->Die();
+	}
+
+
+
+	return true;
+}
+

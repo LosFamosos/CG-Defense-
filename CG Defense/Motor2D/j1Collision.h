@@ -10,8 +10,8 @@
 #include "p2Point.h"
 #include "j1Module.h"
 #include "j1App.h"
+#include "Entities.h"
 
-class j1Entity;
 
 enum COLLIDER_TYPE
 {
@@ -29,9 +29,13 @@ struct Collider
 	bool to_delete = false;
 	COLLIDER_TYPE type;
 	j1Module* callback = nullptr;
+	Entity*		entity_callback = nullptr;
 
 	Collider(SDL_Rect rect, COLLIDER_TYPE type, j1Module *callback = nullptr) :
-		rect(rect), type(type), callback(callback) {}
+		rect(rect), type(type), callback(callback)  {}
+
+	Collider(SDL_Rect rect, COLLIDER_TYPE type, Entity *callback = nullptr) :
+		rect(rect), type(type), entity_callback(callback) {}
 
 	void SetPos(int x, int y)
 	{
@@ -50,11 +54,11 @@ public:
 	~j1Collision();
 
 	bool PreUpdate() override;
-	bool Update(float dt) override;
+	bool PostUpdate() override;
 	bool CleanUp() override;
 
 	Collider* AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module* callback = nullptr);
-	Collider* AddEntCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Entity* entity_callback = nullptr);
+	Collider* AddCollider(SDL_Rect rect, COLLIDER_TYPE type, Entity* entity_callback = nullptr);
 	void DebugDraw();
 
 

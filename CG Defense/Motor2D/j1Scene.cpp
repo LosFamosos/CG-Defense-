@@ -11,6 +11,7 @@
 #include "j1Pathfinding.h"
 #include "j1Gui.h"
 #include "SDL_mixer/include/SDL_mixer.h"
+#include "j1EntityManager.h"
 
 #include "stdio.h"
 
@@ -48,6 +49,12 @@ bool j1Scene::Start()
 
 	LoadLevel(mainmenu);
 
+	current_time = SDL_GetTicks();
+	enemy_spawn_frequency = 500;
+	timer = 0;
+
+	game_timer.Start();
+
 	return true;
 }
 
@@ -69,8 +76,20 @@ bool j1Scene::Update(float dt)
 		PlayerExists = true;//no hace falta pero por si acaso
 	}
 	
+	if (SDL_GetTicks() - timer > enemy_spawn_frequency)
+	{
+		App->entity_manager->SpawnEnemy(EnemyType::ENEMY_EASY);
+		timer = SDL_GetTicks();
+
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN)
+		Restart();
+
 	//Draw the map
 	current_map->Draw();
+
+	game_timer.Update();
 
 	return true;
 }
@@ -166,6 +185,13 @@ void j1Scene::UpdateFade()
 
 }
 
+void j1Scene::Restart()
+{
+	App->entity_manager->CleanEnemies();
+	game_timer.start_time = SDL_GetTicks();
+
+}
+
 void j1Scene::FadeToBlack(const char* leveltoload)
 {
 	if (fade_step == FadeStep::fade_none)
@@ -182,3 +208,38 @@ void j1Scene::ButtonAction(UiButton* button)
 	int i = 0;
 }
 
+
+
+
+//TIMER~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+bool GameTimer::Start()
+{
+	seconds_label = App->gui->AddLabel({ 500,30 }, "");
+	minutes_label = App->gui->AddLabel({ 420,30 }, "");
+
+	start_time = SDL_GetTicks();
+
+	return true;
+}
+
+void GameTimer::Update()
+{
+	//TIMER
+	current_time = SDL_GetTicks() - start_time;
+
+	int minutes = current_time / 60000;
+
+	sprintf_s(seconds_text, 10, "%.2d", (current_time - minutes * 60000) / 1000);
+	seconds_label->text = seconds_text;
+
+	sprintf_s(minutes_text, 10, "%.2d", minutes);
+	minutes_label->text = minutes_text;
+
+}
+
+void GameTimer::ChangeState()
+{
+	minutes_label->active = !minutes_label->active;
+	seconds_label->active = !seconds_label->active;
+}

@@ -3,13 +3,17 @@
 
 #include "Entities.h"
 
+struct Collider;
+
 class Enemy :public Entity
 {
 public:
 
 	Enemy();
 
-	bool Update() override ;
+	bool Update() override;
+
+	void Die();
 
 public:
 
@@ -18,6 +22,8 @@ public:
 	uint damage;
 
 	EnemyType enemy_type;
+
+	Collider* collider=nullptr;
 };
 
 

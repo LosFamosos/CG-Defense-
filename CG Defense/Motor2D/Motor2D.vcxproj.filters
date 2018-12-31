@@ -62,6 +62,9 @@
     <ClCompile Include="Enemy.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
+    <ClCompile Include="Tower.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PugiXml\src\pugixml.cpp" />

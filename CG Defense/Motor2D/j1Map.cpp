@@ -497,7 +497,6 @@ bool j1Map::LoadColliders(pugi::xml_node& node, ColliderData* collider, COLLIDER
 			rect.w = colliders.attribute("width").as_int();
 			rect.h = colliders.attribute("height").as_int();
 
-			data.colliders.collider_list.add(App->collision->AddCollider(rect, collider_type));
 		}
 	}
 	return ret;

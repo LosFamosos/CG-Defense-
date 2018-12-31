@@ -16,6 +16,25 @@ class UiDragBar;
 class UiLabel;
 class UiImage;
 
+struct GameTimer
+{
+	int start_time=0;
+
+	//prints the seconds
+	UiLabel* seconds_label = nullptr;
+	char seconds_text[10] = ("0");
+
+	//prints the minutes
+	UiLabel* minutes_label = nullptr;
+	char minutes_text[10] = ("0");
+
+	int current_time;
+
+	bool Start();
+	void Update();
+	void ChangeState();
+};
+
 enum class FadeStep {
 	fade_none,
 	fade_to_black,
@@ -59,6 +78,8 @@ public:
 	//Called when we want the change the level -> PRIVATE
 	void LoadLevel(const char* level_to_load);
 
+	void Restart();
+
 	void ButtonAction(UiButton* button);
 
 private:
@@ -68,6 +89,12 @@ private:
 	void UpdateFade();
 
 public:
+
+	//Enemy spawning tools
+	uint timer;
+	uint enemy_spawn_frequency;
+	uint current_time;
+
 
 	const char*	mainmenu;
 
@@ -87,6 +114,8 @@ public:
 	bool findplayer = false;
 
 private:
+
+	GameTimer game_timer;
 
 	//Fade
 	uint		fade_time;				//Time for each phase of the fade

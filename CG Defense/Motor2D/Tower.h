@@ -9,14 +9,13 @@ public:
 
 	Tower();
 
-	bool Update();
+	bool Update() override;
+
+	void Shoot();
 
 private:
 
-	void Shoot() {}
-
-private:
-
+	uint attack_timer;
 	uint attack_speed;
 };
 
